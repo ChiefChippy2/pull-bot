@@ -20,7 +20,7 @@ content: list[list[str]] = None
 async def pull(msg: Message, args: list[str], **kwargs):
   global content, last_updated
   resp: list[list[str]] = None
-  if content is not None or last_updated + cache_delay > datetime.utcnow().timestamp():
+  if content is not None and last_updated + cache_delay > datetime.utcnow().timestamp():
     resp = content
   else:
     cli = http.ClientSession()
