@@ -2,6 +2,7 @@
 clasp/
 .clasp.json
 
+example.csv
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

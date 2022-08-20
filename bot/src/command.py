@@ -32,6 +32,30 @@ async def pull(msg: Message, args: list[str], **kwargs):
     last_updated = datetime.utcnow().timestamp()
     await cli.close()
   nom_commande = ' '.join(args[1:])
+  # Afficher la liste de noms acceptés :
+  if nom_commande == 'list' or nom_commande == 'liste' or nom_commande == '':
+    emb = Embed(title=f"Liste des options acceptées pour {os.environ['PREFIX']}pull <nom_commande>: ")
+    fields = [[]]
+    for row in resp[1:]:
+      nom = row[0]
+      if row[0].strip() == '':
+        fields += [[]]
+      fields[-1] += [row[0]]
+
+    final_fields = []
+    longest_field_count = max(len(field) for field in fields)
+    for field in fields:
+      if len(field) == 0: continue
+      max_field_char = max(len(nom) for nom in field)
+      final_field = list(map(lambda nom:nom.ljust(max_field_char, ' '), field))
+      final_field+=[' '*max_field_char]*(longest_field_count - len(field))
+      final_fields += [final_field]
+
+    emb.add_field(name='\u200B', value='```'+'\n'.join(' | '.join(i) for i in list(zip(*final_fields)))+'```')
+    emb.set_footer(text='Les options restent valables quel que soit la casse.')
+    return await msg.reply(embed=emb)
+  # -- end  
+
   col = -1
   for [i,row] in enumerate(resp[1:]):
     if almost(row[0]) == almost(nom_commande): col = i+1
