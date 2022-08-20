@@ -5,6 +5,9 @@ from dotenv import load_dotenv
 from command import commandes
 
 async def not_found(msg: discord.Message, args, **kwargs):
+  # ignorez les "???" ou les "?!"
+  if all(i in '?.! ' for i in msg.content):
+    return
   await msg.reply(content='Cette commande n\'existe pas')
 
 
@@ -36,6 +39,7 @@ client = Bot()
 try:
     client.run(os.environ['TOKEN'])
 finally:
-    client.message.exit()
-    client.database.close()
     print('-- Arrêt en cours -- ')
+    # ???
+    # client.message.exit()
+    # client.database.close()
