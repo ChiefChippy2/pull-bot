@@ -35,7 +35,17 @@ class Bot(discord.Client):
 
 
 load_dotenv()
-client = Bot()
+
+# Ayant un problème d'intents avec discord.py, on utilise la valeur 46665 qui consiste en perms de :
+# GUILDS
+# GUILDS_EMOJIS_AND_STICKERS
+# GUILD_INVITES
+# GUILD_MESSAGES (de même pour dm)
+# GUILD_MESSAGES_REACTIONS (de même pour dm)
+# MESSAGE_CONTENT
+intents = discord.Intents._from_value(46665)
+
+client = Bot(intents=intents)
 try:
     client.run(os.environ['TOKEN'])
 finally:
