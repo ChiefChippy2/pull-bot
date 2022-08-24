@@ -51,7 +51,7 @@ async def pull(msg: Message, args: list[str], **kwargs):
       final_field+=[' '*max_field_char]*(longest_field_count - len(field))
       final_fields += [final_field]
 
-    emb.add_field(name='\u200B', value='```'+'\n'.join(' | '.join(i) for i in list(zip(*final_fields)))+'```')
+    emb.add_field(name='\u200B', value='```'+'\n'.join(list(' | '.join(i) for i in list(zip(*final_fields)))[1:])+'```')
     emb.set_footer(text='Les options restent valables quel que soit la casse.')
     return await msg.reply(embed=emb)
   # -- end  
