@@ -35,23 +35,26 @@ async def pull(msg: Message, args: list[str], **kwargs):
   # Afficher la liste de noms acceptés :
   if nom_commande == 'list' or nom_commande == 'liste' or nom_commande == '':
     emb = Embed(title=f"Liste des options acceptées pour {os.environ['PREFIX']}pull <nom_commande>: ")
-    fields = [[]]
+    candidate_fields = [[]]
     for row in resp[1:]:
       nom = row[0]
       if row[0].strip() == '':
-        fields += [[]]
-      fields[-1] += [row[0]]
+        candidate_fields += [[]]
+      candidate_fields[-1] += [row[0]]
 
-    final_fields = []
-    longest_field_count = max(len(field) for field in fields)
-    for field in fields:
-      if len(field) == 0: continue
-      max_field_char = max(len(nom) for nom in field)
-      final_field = list(map(lambda nom:nom.ljust(max_field_char, ' '), field))
-      final_field+=[' '*max_field_char]*(longest_field_count - len(field))
-      final_fields += [final_field]
+    while len(candidate_fields) > 0:
+      fields = candidate_fields[0:5]
+      candidate_fields = candidate_fields[5:]
+      final_fields = []
+      longest_field_count = max(len(field) for field in fields)
+      for field in fields:
+        if len(field) == 0: continue
+        max_field_char = max(len(nom) for nom in field)
+        final_field = list(map(lambda nom:nom.ljust(max_field_char, ' '), field))
+        final_field += [' '*max_field_char]*(longest_field_count - len(field))
+        final_fields += [final_field]
 
-    emb.add_field(name='\u200B', value='```'+'\n'.join(list(' | '.join(i) for i in list(zip(*final_fields)))[1:])+'```')
+      emb.add_field(name='\u200B', value='```'+'\n'.join(list(' | '.join(i) for i in list(zip(*final_fields)))[1:])+'```', inline=False)
     emb.set_footer(text='Les options restent valables quel que soit la casse.')
     return await msg.reply(embed=emb)
   # -- end  
