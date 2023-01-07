@@ -2,7 +2,7 @@ from datetime import datetime
 import os
 import discord
 from dotenv import load_dotenv
-from command import commandes
+from command import commandes  # type: ignore
 
 async def not_found(msg: discord.Message, args, **kwargs):
   # ignorez les "???" ou les "?!"

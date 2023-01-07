@@ -75,7 +75,8 @@ async def pull(msg: Message, args: list[str], **kwargs):
     state,*date = val.split(' ')
     field_value = ("✅" if state=="V" else ("⌛" if state=="X" else "❌"))
     if len(date) > 0: field_value += f' depuis {date[0]}'
-    emb.add_field(name=nom, value=field_value, inline=False)
+    # Au cas où il y a une colonne sans titre, on l'ignore
+    if nom.strip(): emb.add_field(name=nom, value=field_value, inline=False)
   
   # Remarques
   if data[1]:
